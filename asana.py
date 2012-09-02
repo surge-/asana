@@ -35,13 +35,13 @@ class AsanaAPI(object):
         r = requests.get(target, auth=(self.apikey, ""))
         if self._ok_status(r.status_code) and r.status_code is not 404:
             if r.headers['content-type'].split(';')[0] == 'application/json':
-                return json.loads(r.text)['data']
+                return json.loads(r.content)['data']
             else:
                 raise Exception('Did not receive json from api: %s' % str(r))
         else:
             if self.debug:
                 print "-> Got: %s" % r.status_code
-                print "-> %s" % r.text
+                print "-> %s" % r.content
             raise Exception('Received non 2xx or 404 status code on call')
 
     def _asana_post(self, api_target, data):
@@ -53,7 +53,7 @@ class AsanaAPI(object):
         r = requests.post(target, auth=(self.apikey, ""), data=data)
         if self._ok_status(r.status_code) and r.status_code is not 404:
             if r.headers['content-type'].split(';')[0] == 'application/json':
-                return json.loads(r.text)['data']
+                return json.loads(r.content)['data']
             else:
                 raise Exception('Did not receive json from api: %s' % str(r))
         else:
